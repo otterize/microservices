@@ -90,45 +90,7 @@
         <button> Place order </button>
     </form>
 
-    <div class="summary">
-        <h3> Cart (2) </h3>
-
-        <div class="cart-items">
-            <div class="item">
-                <div class="item-image" style="background-image: url('https://warmies.com/cdn/shop/products/CP-OTT-1-Otter-01-Crop_c95c3ff8-25e7-41d6-b22b-acd93af70774.jpg?v=1721736595')"></div>
-                <div style="display: flex; flex-direction: column; gap: 12px; width: 100%;">
-                    <h2>Sea Otter</h2>
-                    <div class="item-tags"> PLUSHIES </div>
-
-                    <div class="item-summary">
-                        <span> Quantity: 2 </span>
-                        <span> $10.00 </span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="item">
-                <div class="item-image" style="background-image: url('https://warmies.com/cdn/shop/products/CP-OTT-1-Otter-01-Crop_c95c3ff8-25e7-41d6-b22b-acd93af70774.jpg?v=1721736595')"></div>
-                <div style="display: flex; flex-direction: column; gap: 12px; width: 100%;">
-                    <h2>Sea Otter</h2>
-                    <div class="item-tags"> PLUSHIES </div>
-
-                    <div class="item-summary">
-                        <span> Quantity: 2 </span>
-                        <span> $10.00 </span>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="shipping-price">
-            <span> Shipping </span> <span> $10.00 </span>
-        </div>
-
-        <div class="total-price">
-            <span> Total </span> <span> $30.00 </span>
-        </div>
-    </div>
+    <div class="summary" hx-get="{{ url_for('cart_summary') }}" hx-trigger="load, cartChanged from:body"></div>
 </div>
 
 <style>
@@ -141,7 +103,7 @@
   .title h1{
     font-size: 34px;
     font-weight: 500;
-    color: #2a2a2a;
+    color: var(--text-color);
   }
 
   .cart {
@@ -152,14 +114,10 @@
     gap: 48px;
     padding: 48px;
   }
-
   .cart h3 {
-    padding: 16px 0;
     font-size: 16px;
     font-weight: 600;
-    color: #2a2a2a;
-    margin-bottom: 8px;
-    border-bottom: 1px solid #dcdcdc;
+    color: var(--text-color);
   }
 
   .shipping {
@@ -167,6 +125,11 @@
     flex-direction: column;
     gap: 12px;
     width: 60%;
+  }
+  .shipping h3 {
+    padding: 16px 0;
+    margin-bottom: 8px;
+    border-bottom: 1px solid #dcdcdc;
   }
 
   .details-block {
@@ -179,7 +142,7 @@
     width: 100%;
     padding: 12px;
     font-size: 16px;
-    background: #2a2a2a;
+    background: var(--text-color);
     color: #f7f7f7;
     margin-top: 16px;
   }
@@ -188,73 +151,6 @@
     display: flex;
     flex-direction: column;
     width: 40%;
-  }
-
-  .summary h3 {
-    margin-bottom: 0;
-  }
-
-  .item {
-    display: flex;
-    flex-direction: row;
-    gap: 16px;
-    padding: 16px 0;
-    border-bottom: 1px solid #dcdcdc;
-  }
-
-  .item-image {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 120px;
-    height: 120px;
-    flex-shrink: 0;
-    background: #f3f4f6;
-    background-size: cover;
-    background-position: center;
-  }
-
-  .item h2 {
-    font-size: 20px;
-    font-weight: 500;
-  }
-
-  .item-tags {
-    display: flex;
-    gap: 8px;
-    font-size: 12px;
-    font-weight: 300;
-    color: #9ca3af;
-  }
-
-  .item-summary {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    margin-top: auto;
-    font-size: 12px;
-    font-weight: 300;
-    color: #2a2a2a;
-  }
-
-  .shipping-price{
-    display: flex;
-    justify-content: space-between;
-    padding: 16px 0;
-    border-bottom: 1px solid #dcdcdc;
-    font-size: 14px;
-    font-weight: 300;
-    color: #2a2a2a;
-  }
-
-  .total-price{
-    display: flex;
-    justify-content: space-between;
-    padding: 16px 0;
-    border-bottom: 1px solid #dcdcdc;
-    font-size: 16px;
-    font-weight: 600;
-    color: #2a2a2a;
   }
 </style>
 

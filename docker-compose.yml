@@ -45,6 +45,19 @@ services:
     depends_on:
       - postgres
 
+  cart-service:
+    build:
+      dockerfile: build/cart.Dockerfile
+    restart: unless-stopped
+    platform: linux/amd64
+    ports:
+      - "7004:7004"
+    environment:
+      REDIS_HOST: redis
+      PRODUCTS_SERVICE_API: https://products-service:7002
+    depends_on:
+      - redis
+
   postgres:
     image: postgres:14
     restart: unless-stopped

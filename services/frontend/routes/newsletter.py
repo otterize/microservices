@@ -18,4 +18,7 @@ async def products(email: str = Form(...)):
     if api_resp.status_code == 201:
         return HTMLResponse(status_code=200, content="Successfully subscribed to newsletter!")
 
-    return HTMLResponse(status_code=500, content="Could not subscribe. Please try again later.")
+    return HTMLResponse(
+        status_code=api_resp.status_code,
+        content="Could not subscribe. Please try again later."
+    )

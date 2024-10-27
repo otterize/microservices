@@ -1,10 +1,10 @@
 
-<div class="header">
+<div class="header" >
     <a href="{{ url_for('get_shop_page') }}" class="header-title">
         The Otter Side
     </a>
-    <div class="header-actions">
-        <a href="{{ url_for('get_cart_page') }}">
+    <div class="header-actions" hx-post="/api/users/signin">
+        <a href="{{ url_for('get_cart_page') }}" hx-get="{{ url_for('cart_status') }}" hx-trigger="load, cartChanged from:body">
             CART
         </a>
 
@@ -32,5 +32,22 @@
     gap: 24px;
     font-size: 14px;
     font-weight: 300;
+  }
+  .header-actions a{
+    position: relative;
+  }
+  .header-actions a .cart-items {
+    position: absolute;
+    top: -14px;
+    left: -14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 14px;
+    height: 14px;
+    background: var(--text-color);
+    font-size: 8px;
+    color: white;
+    border-radius: 50%;
   }
 </style>

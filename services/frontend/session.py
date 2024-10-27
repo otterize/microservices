@@ -19,7 +19,7 @@ SESSION_DB: dict[str, SessionData] = {}
 COOKIE_NAME = "Authorization"
 
 
-def get_auth_user(request: Request):
+def get_session(request: Request) -> SessionData:
     """verify that user has a valid session"""
     session_id = request.cookies.get(COOKIE_NAME)
     if not session_id:
@@ -27,7 +27,7 @@ def get_auth_user(request: Request):
     if session_id not in SESSION_DB:
         raise UnauthenticatedException(message="Invalid session")
 
-    return True
+    return SESSION_DB[session_id]
 
 
 def create_session(email: str, response: HTMLResponse):
