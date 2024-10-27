@@ -1,0 +1,58 @@
+[
+  {
+    "id": 1,
+    "title": "Sitting otter plushie",
+    "category": "PLUSHIES",
+    "price": 20.00,
+    "image": "static/images/plushie1.png"
+  },
+  {
+    "id": 2,
+    "title": "Chubby otter sticker",
+    "category": "STICKERS",
+    "price": 3.00,
+    "image": "static/images/sticker2.png"
+  },
+  {
+    "id": 3,
+    "title": "Monkey otter plushie",
+    "category": "PLUSHIES",
+    "price": 15.00,
+    "image": "static/images/plushie2.png"
+  },
+  {
+    "id": 4,
+    "title": "Sea otter sticker",
+    "category": "STICKERS",
+    "price": 2.00,
+    "image": "static/images/sticker1.png"
+  },
+  {
+    "id": 5,
+    "title": "Small otter cup",
+    "category": "UTENSILS",
+    "price": 10.00,
+    "image": "static/images/cup1.png"
+  },
+  {
+    "id": 6,
+    "title": "Flat otter plushie",
+    "category": "PLUSHIES",
+    "price": 20.00,
+    "image": "static/images/plushie3.png"
+  },
+  {
+    "id": 7,
+    "title": "Small otter plate",
+    "category": "UTENSILS",
+    "price": 10.00,
+    "image": "static/images/plate2.png"
+  },
+  {
+    "id": 8,
+    "title": "Señor otter pin",
+    "category": "UTENSILS",
+    "price": 5.00,
+    "image": "static/images/pin1.png"
+  }
+]

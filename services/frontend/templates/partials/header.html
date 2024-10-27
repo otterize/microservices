@@ -1,0 +1,36 @@
+
+<div class="header">
+    <a href="{{ url_for('get_shop_page') }}" class="header-title">
+        The Otter Side
+    </a>
+    <div class="header-actions">
+        <a href="{{ url_for('get_cart_page') }}">
+            CART
+        </a>
+
+        <a hx-post="{{ url_for('signout') }}">
+            LOG OUT
+        </a>
+    </div>
+</div>
+
+<style>
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 28px 0;
+  }
+
+  .header-title {
+    font-size: 22px;
+    font-weight: 500;
+  }
+
+  .header-actions {
+    display: flex;
+    gap: 24px;
+    font-size: 14px;
+    font-weight: 300;
+  }
+</style>

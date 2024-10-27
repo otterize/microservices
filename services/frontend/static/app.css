@@ -1,0 +1,71 @@
+:root {
+  --primary-color: #e6e6ff;
+  --text-color: #2a2a2a;
+}
+
+.app {
+  padding: 0 40px;
+  background: #FFF;
+  height: 100%;
+  overflow-y: scroll;
+}
+
+a {
+  text-decoration: none;
+  color: #2a2a2a;
+  cursor: pointer;
+}
+
+button {
+  background: unset;
+  width: fit-content;
+  border: 2px solid #2a2a2a;
+  border-radius: 4px;
+  padding: 8px 16px;
+  font-size: 14px;
+  transition: all 0.3s;
+  cursor: pointer;
+}
+button:hover {
+  background: #2a2a2a;
+  color: #F7F7F7;
+}
+
+label {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+}
+
+label span {
+  font-size: 14px;
+  font-weight: 300;
+  color: #6f6f6f;
+}
+
+label input {
+  background: unset;
+  width: 100%;
+  padding: 12px 20px;
+  border: 1px solid #dcdcdc;
+  font-size: 14px;
+  box-sizing: border-box;
+  border-radius: 4px;
+}
+
+label textarea {
+  background: unset;
+  width: 100%;
+  padding: 12px 20px;
+  border: 1px solid #dcdcdc;
+  font-size: 14px;
+  box-sizing: border-box;
+  border-radius: 4px;
+  resize: vertical;
+}
+
+/* Hide empty divs inside forms - used for messages from server-side */
+form div:empty {
+  display: none;
+}

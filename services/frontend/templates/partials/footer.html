@@ -1,0 +1,68 @@
+
+<div class="footer" hx-ext="response-targets">
+    <form class="footer-text" hx-post="/api/newsletter/subscribe" hx-target="#success" hx-target-error="#error">
+        <h3>Subscribe to our newsletter</h3>
+        <h6> Subscribe now to be the first to get otter-ly amazing deals and offers!</h6>
+
+        <input type="email" name="email" placeholder="Enter your email address">
+        <button type="submit">Subscribe</button>
+
+        <div id="success"></div>
+        <div id="error"></div>
+    </form>
+
+    <div class="copyrights">
+        Copyright 2024 Otterize.
+    </div>
+</div>
+
+<style>
+  .footer {
+    display: flex;
+    flex-direction: column;
+    padding: 48px 0;
+  }
+
+  .footer-text {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    padding: 100px 0;
+    background: var(--primary-color);
+  }
+  .footer-text h3 {
+    font-size: 40px;
+    font-weight: 600;
+    color: var(--text-color);
+  }
+  .footer-text h6 {
+    font-size: 16px;
+    font-weight: 400;
+    color: var(--text-color);
+  }
+  .footer-text input {
+    width: 554px;
+    padding: 12px;
+    color: var(--text-color);
+    border: 1px solid var(--text-color);
+    border-radius: 4px;
+  }
+
+  .copyrights {
+    background: var(--text-color);
+    text-align: center;
+    color: #F7F7F7;
+    padding: 48px;
+    font-size: 14px;
+    font-weight: 300;
+  }
+
+  #success {
+    color: rgb(25, 148, 115);
+    font-size: 14px;
+    font-weight: 500;
+  }
+
+</style>

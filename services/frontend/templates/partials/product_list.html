@@ -1,0 +1,9 @@
+{% for product in products %}
+<div class="item">
+    <div class="item-image" style="background-image: url({{ product.image }})"></div>
+    <h2> {{ product.title }} </h2>
+    <div class="category"> {{ product.category }} </div>
+    <p> {{ "%.2f"|format(product.price ) }}$ </p>
+    <button>Add to Cart</button>
+</div>
+{% endfor %}

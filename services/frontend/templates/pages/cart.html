@@ -1,0 +1,261 @@
+{% extends "base/app-layout.html" %}
+{% block title %} Shop {% endblock %}
+
+
+{% block content %}
+
+<div class="title">
+    <h1> Checkout </h1>
+</div>
+
+<div class="cart">
+    <form class="shipping">
+        <div class="details-block">
+            <h3> Customer Information </h3>
+
+            <label for="email">
+                <span> Email </span>
+                <input type="email" id="email" name="email" required>
+            </label>
+
+            <div style="display: flex; flex-direction: row; gap: 16px;">
+                <label for="first_name">
+                    <span> First Name </span>
+                    <input type="text" id="first_name" name="first_name" required>
+                </label>
+                <label for="last_name">
+                    <span> Last Name </span>
+                    <input type="text" id="last_name" name="last_name" required>
+                </label>
+            </div>
+        </div>
+
+        <div class="details-block">
+            <h3> Shipping Address </h3>
+
+            <label for="company_name">
+                <span> Company Name </span>
+                <input type="text" id="company_name" name="company_name">
+            </label>
+
+            <div style="display: flex; flex-direction: row; gap: 16px;">
+                <label for="country">
+                    <span> Country </span>
+                    <input type="text" id="country" name="country" required>
+                </label>
+
+                <label for="city">
+                    <span> City </span>
+                    <input type="text" id="city" name="city" required>
+                </label>
+
+                <label for="zip">
+                    <span> Zip </span>
+                    <input type="text" id="zip" name="zip" required>
+                </label>
+            </div>
+
+            <label for="address">
+                <span> Street Address </span>
+                <input type="text" id="address" name="address" required>
+            </label>
+        </div>
+
+        <div class="details-block">
+            <h3> Payment Method </h3>
+
+            <label for="card">
+                <span> Credit Card Number </span>
+                <input type="text" id="card" name="card" required>
+            </label>
+
+            <div style="display: flex; flex-direction: row; gap: 16px;">
+                <label for="month">
+                    <span> Month </span>
+                    <input type="text" id="month" name="month" required>
+                </label>
+
+                <label for="year">
+                    <span> Year </span>
+                    <input type="text" id="year" name="year" required>
+                </label>
+
+                <label for="zip">
+                    <span> CVV </span>
+                    <input type="text" id="cvv" name="cvv" required>
+                </label>
+            </div>
+        </div>
+
+        <button> Place order </button>
+    </form>
+
+    <div class="summary">
+        <h3> Cart (2) </h3>
+
+        <div class="cart-items">
+            <div class="item">
+                <div class="item-image" style="background-image: url('https://warmies.com/cdn/shop/products/CP-OTT-1-Otter-01-Crop_c95c3ff8-25e7-41d6-b22b-acd93af70774.jpg?v=1721736595')"></div>
+                <div style="display: flex; flex-direction: column; gap: 12px; width: 100%;">
+                    <h2>Sea Otter</h2>
+                    <div class="item-tags"> PLUSHIES </div>
+
+                    <div class="item-summary">
+                        <span> Quantity: 2 </span>
+                        <span> $10.00 </span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="item">
+                <div class="item-image" style="background-image: url('https://warmies.com/cdn/shop/products/CP-OTT-1-Otter-01-Crop_c95c3ff8-25e7-41d6-b22b-acd93af70774.jpg?v=1721736595')"></div>
+                <div style="display: flex; flex-direction: column; gap: 12px; width: 100%;">
+                    <h2>Sea Otter</h2>
+                    <div class="item-tags"> PLUSHIES </div>
+
+                    <div class="item-summary">
+                        <span> Quantity: 2 </span>
+                        <span> $10.00 </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="shipping-price">
+            <span> Shipping </span> <span> $10.00 </span>
+        </div>
+
+        <div class="total-price">
+            <span> Total </span> <span> $30.00 </span>
+        </div>
+    </div>
+</div>
+
+<style>
+  .title {
+    display: flex;
+    justify-content: center;
+    padding: 80px 60px;
+    background: var(--primary-color);
+  }
+  .title h1{
+    font-size: 34px;
+    font-weight: 500;
+    color: #2a2a2a;
+  }
+
+  .cart {
+    display: flex;
+    flex-direction: row;
+    max-width: 1200px;
+    margin: 0 auto;
+    gap: 48px;
+    padding: 48px;
+  }
+
+  .cart h3 {
+    padding: 16px 0;
+    font-size: 16px;
+    font-weight: 600;
+    color: #2a2a2a;
+    margin-bottom: 8px;
+    border-bottom: 1px solid #dcdcdc;
+  }
+
+  .shipping {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: 60%;
+  }
+
+  .details-block {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .shipping button {
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+    background: #2a2a2a;
+    color: #f7f7f7;
+    margin-top: 16px;
+  }
+
+  .summary {
+    display: flex;
+    flex-direction: column;
+    width: 40%;
+  }
+
+  .summary h3 {
+    margin-bottom: 0;
+  }
+
+  .item {
+    display: flex;
+    flex-direction: row;
+    gap: 16px;
+    padding: 16px 0;
+    border-bottom: 1px solid #dcdcdc;
+  }
+
+  .item-image {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 120px;
+    height: 120px;
+    flex-shrink: 0;
+    background: #f3f4f6;
+    background-size: cover;
+    background-position: center;
+  }
+
+  .item h2 {
+    font-size: 20px;
+    font-weight: 500;
+  }
+
+  .item-tags {
+    display: flex;
+    gap: 8px;
+    font-size: 12px;
+    font-weight: 300;
+    color: #9ca3af;
+  }
+
+  .item-summary {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-top: auto;
+    font-size: 12px;
+    font-weight: 300;
+    color: #2a2a2a;
+  }
+
+  .shipping-price{
+    display: flex;
+    justify-content: space-between;
+    padding: 16px 0;
+    border-bottom: 1px solid #dcdcdc;
+    font-size: 14px;
+    font-weight: 300;
+    color: #2a2a2a;
+  }
+
+  .total-price{
+    display: flex;
+    justify-content: space-between;
+    padding: 16px 0;
+    border-bottom: 1px solid #dcdcdc;
+    font-size: 16px;
+    font-weight: 600;
+    color: #2a2a2a;
+  }
+</style>
+
+{% endblock %}
