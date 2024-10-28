@@ -56,7 +56,21 @@ services:
       REDIS_HOST: redis
       PRODUCTS_SERVICE_API: https://products-service:7002
     depends_on:
+      - products-service
       - redis
+
+  checkout-service:
+    build:
+      dockerfile: build/checkout.Dockerfile
+    restart: unless-stopped
+    platform: linux/amd64
+    command: ["node", "index.js"]
+    ports:
+      - "7005:7005"
+    environment:
+      CART_SERVICE_API: https://cart-service:7004
+    depends_on:
+      - cart-service
 
   postgres:
     image: postgres:14

@@ -14,8 +14,11 @@ async def get_shop_page(request: Request):
 
 
 @router.get("/cart", response_class=HTMLResponse, dependencies=[Depends(get_session)])
-async def get_cart_page(request: Request):
-    return templates.TemplateResponse("pages/cart.html", {"request": request})
+async def get_cart_page(request: Request, session=Depends(get_session)):
+    return templates.TemplateResponse("pages/cart.html", {
+        "request": request,
+        "email": session.email
+    })
 
 
 @router.get("/login", response_class=HTMLResponse)

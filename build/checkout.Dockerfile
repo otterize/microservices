@@ -1,4 +1,4 @@
-# docker build -t newsletter-service -f build/newsletter.Dockerfile .
+# docker build -t checkout-service -f build/checkout.Dockerfile .
 
 # Stage 1: Create a self signed SSL certificate
 FROM alpine:latest AS certs
@@ -18,14 +18,14 @@ WORKDIR /app
 COPY --from=certs /app .
 
 # Download and install dependencies
-COPY services/newsletter/package*.json ./
+COPY services/checkout/package*.json ./
 RUN npm install
 
 # Copy the rest of the application code
-COPY services/newsletter/. .
+COPY services/checkout/. .
 
-# Expose port 7003 for the HTTPS server
-EXPOSE 7003
+# Expose port 7005 for the HTTPS server
+EXPOSE 7005
 
 # Start the server
 CMD ["node", "index.js"]

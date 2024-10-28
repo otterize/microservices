@@ -8,24 +8,24 @@
     <h1> Checkout </h1>
 </div>
 
-<div class="cart">
-    <form class="shipping">
+<div class="cart" id="cart">
+    <form class="shipping" hx-post="{{ url_for('process_checkout') }}" hx-target="#cart" hx-swap="show:#app:top" hx-indicator="#loader">
         <div class="details-block">
             <h3> Customer Information </h3>
 
             <label for="email">
                 <span> Email </span>
-                <input type="email" id="email" name="email" required>
+                <input type="email" id="email" name="email" value="{{ email }}" required>
             </label>
 
             <div style="display: flex; flex-direction: row; gap: 16px;">
                 <label for="first_name">
                     <span> First Name </span>
-                    <input type="text" id="first_name" name="first_name" required>
+                    <input type="text" id="first_name" name="first_name">
                 </label>
                 <label for="last_name">
                     <span> Last Name </span>
-                    <input type="text" id="last_name" name="last_name" required>
+                    <input type="text" id="last_name" name="last_name">
                 </label>
             </div>
         </div>
@@ -35,29 +35,29 @@
 
             <label for="company_name">
                 <span> Company Name </span>
-                <input type="text" id="company_name" name="company_name">
+                <input type="text" id="company_name" name="company_name" value="Otterize">
             </label>
 
             <div style="display: flex; flex-direction: row; gap: 16px;">
                 <label for="country">
                     <span> Country </span>
-                    <input type="text" id="country" name="country" required>
+                    <input type="text" id="country" name="country" value="United States">
                 </label>
 
                 <label for="city">
                     <span> City </span>
-                    <input type="text" id="city" name="city" required>
+                    <input type="text" id="city" name="city" value="New York" required>
                 </label>
 
                 <label for="zip">
                     <span> Zip </span>
-                    <input type="text" id="zip" name="zip" required>
+                    <input type="text" id="zip" name="zip" value="10011" required>
                 </label>
             </div>
 
             <label for="address">
                 <span> Street Address </span>
-                <input type="text" id="address" name="address" required>
+                <input type="text" id="address" name="address" value="47 W 13th St, New York, NY 10011, USA" required>
             </label>
         </div>
 
@@ -66,28 +66,35 @@
 
             <label for="card">
                 <span> Credit Card Number </span>
-                <input type="text" id="card" name="card" required>
+                <input type="text" id="card" name="card" value="4111 1111 1111 1111" required>
             </label>
 
             <div style="display: flex; flex-direction: row; gap: 16px;">
                 <label for="month">
                     <span> Month </span>
-                    <input type="text" id="month" name="month" required>
+                    <input type="text" id="month" name="month" value="12" required>
                 </label>
 
                 <label for="year">
                     <span> Year </span>
-                    <input type="text" id="year" name="year" required>
+                    <input type="text" id="year" name="year" value="2030" required>
                 </label>
 
-                <label for="zip">
+                <label for="cvv">
                     <span> CVV </span>
-                    <input type="text" id="cvv" name="cvv" required>
+                    <input type="text" id="cvv" name="cvv" value="111" required>
                 </label>
             </div>
         </div>
 
-        <button> Place order </button>
+        <button id="loader">
+            <span> Place order </span>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid" style="shape-rendering: auto;" width="16" height="16">
+                <g data-idx="1" style="fill: #FFFFFF; stroke: none; transform: none; opacity: 1;">
+                    <circle stroke-dasharray="94.24777960769379 33.41592653589793" r="32" stroke-width="4" stroke="#FFFFFF" fill="none" cy="50" cx="50" data-idx="2" transform="matrix(-0.2486899197101593,0.9685831665992737,-0.9685831665992737,-0.2486899197101593,110.86365509033203,14.005337715148926)" style="opacity: 1;"></circle>
+                </g>
+            </svg>
+        </button>
     </form>
 
     <div class="summary" hx-get="{{ url_for('cart_summary') }}" hx-trigger="load, cartChanged from:body"></div>
@@ -151,6 +158,35 @@
     display: flex;
     flex-direction: column;
     width: 40%;
+    height: 50px;
+  }
+
+  #loader {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  #loader svg {
+    display: none;
+    animation-name: spin;
+    animation-duration: 1000ms;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+  }
+  #loader.htmx-request svg {
+    display: block;
+  }
+  #loader.htmx-request span {
+    display: none;
+  }
+
+  @keyframes spin {
+    from {
+      transform:rotate(0deg);
+    }
+    to {
+      transform:rotate(360deg);
+    }
   }
 </style>
 

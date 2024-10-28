@@ -8,7 +8,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const fetch = require('node-fetch');
 
-const CART_SERVICE_API = process.env.NEWSLETTER_SERVICE_API || 'https://localhost:7003';
+const CART_SERVICE_API = process.env.CART_SERVICE_API || 'https://localhost:7004';
 
 // Initialize the app and port
 const app = express();
@@ -27,19 +27,27 @@ app.post('/process', async (req, res) => {
   }
 
   // Fetch the cart items from the cart service
-  const response = await fetch(`${CART_SERVICE_API}/?user_id=${user_id}`,{method: 'GET'});
-  console.log(response);
+  let response = await fetch(`${CART_SERVICE_API}/?user_id=${user_id}`,{method: 'GET'});
+  if (!response.ok) {
+    return res.status(500).json({ error: 'Failed to fetch cart items' });
+  }
+  const cartStatus = await response.json();
 
-  // try {
-  //   // Create a new subscriber in the database
-  //   await Subscriber.create({ email });
-  //   return res.status(201).json({ message: 'Subscribed successfully' });
-  // } catch (error) {
-  //   if (error.name === 'SequelizeUniqueConstraintError') {
-  //     return res.status(201).json({ message: 'Subscribed successfully' });
-  //   }
-  //   return res.status(500).json({ error: 'Failed to subscribe' });
-  // }
+  // Process the payment
+  const body = { customer, address, payment, total: cartStatus.total }
+  response = await fetch(`https://otterize.com`,{
+    method: 'POST',
+    body: JSON.stringify(body),
+    headers: {'Content-Type': 'application/json'}
+  });
+
+  // Empty the cart after checkout
+  response = await fetch(`${CART_SERVICE_API}/?user_id=${user_id}`,{method: 'DELETE'});
+  if (!response.ok) {
+    return res.status(500).json({ error: 'Failed to empty the cart' });
+  }
+
+  return res.status(200).json({ message: 'Checked out' });
 });
 
 // Certificate paths

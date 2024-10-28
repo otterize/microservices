@@ -8,6 +8,7 @@ from routes.views import router as views_router
 from routes.cart import router as cart_router
 from routes.users import router as users_router
 from routes.products import router as products_router
+from routes.checkout import router as checkout_router
 from routes.newsletter import router as newsletter_router
 
 app = FastAPI()
@@ -36,6 +37,7 @@ app.include_router(views_router, tags=["views"])
 app.include_router(cart_router, prefix="/api/cart", tags=["cart"])
 app.include_router(users_router, prefix="/api/users", tags=["users"])
 app.include_router(products_router, prefix="/api/products", tags=["products"])
+app.include_router(checkout_router, prefix="/api/checkout", tags=["checkout"])
 app.include_router(newsletter_router, prefix="/api/newsletter", tags=["newsletter"])
 
 
