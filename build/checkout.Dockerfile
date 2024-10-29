@@ -11,7 +11,7 @@ RUN openssl req -new -newkey rsa:2048 -days 365 -nodes -x509 \
     -keyout server.key -out server.crt
 
 # Stage 2: Build the Node application
-FROM node:16
+FROM node:21
 WORKDIR /app
 
 # Copy the certificates from the certs stage

@@ -3,6 +3,7 @@ const http = require('http');
 const https = require('https');
 const path = require('path');
 const express = require('express');
+const fetch = require('node-fetch');
 const bodyParser = require('body-parser');
 const { Sequelize, DataTypes } = require('sequelize');
 
@@ -54,9 +55,19 @@ app.post('/subscribe', async (req, res) => {
     return res.status(400).json({ error: 'Email is required' });
   }
 
+  console.log(`Subscribing ${email}`)
+
   try {
     // Create a new subscriber in the database
     await Subscriber.create({ email });
+
+    // Mock sending email
+    await fetch(`https://otterize.com`,{
+      method: 'POST',
+      body: JSON.stringify({ email }),
+      headers: {'Content-Type': 'application/json'}
+    });
+
     return res.status(201).json({ message: 'Subscribed successfully' });
   } catch (error) {
     if (error.name === 'SequelizeUniqueConstraintError') {

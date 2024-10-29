@@ -1,4 +1,4 @@
-# docker build -t newsletter-service -f build/newsletter.Dockerfile .
+# docker build -t frontend-service -f build/frontend.Dockerfile .
 
 # Stage 1: Create a self signed SSL certificate
 FROM alpine:latest AS certs
@@ -10,22 +10,22 @@ RUN openssl req -new -newkey rsa:2048 -days 365 -nodes -x509 \
     -subj "/C=US/ST=State/L=City/O=Organization/CN=localhost" \
     -keyout server.key -out server.crt
 
-# Stage 2: Build the Node application
-FROM node:21
+# Stage 2: Build the Python application
+FROM python:3.12-slim
 WORKDIR /app
 
 # Copy the certificates from the certs stage
 COPY --from=certs /app .
 
-# Download and install dependencies
-COPY services/newsletter/package*.json ./
-RUN npm install
+# Copy requirements and install dependencies
+COPY services/frontend/requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy the rest of the application code
-COPY services/newsletter/. .
+COPY services/frontend/. .
 
-# Expose port 7003 for the HTTPS server
-EXPOSE 7003
+# Expose port 7000 for the HTTPS server
+EXPOSE 7000
 
-# Start the server
-CMD ["node", "index.js"]
+# Run the Python server
+CMD ["python", "server.py"]

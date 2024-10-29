@@ -1,0 +1,33 @@
+{{- range $service, $config := .Values.services }}
+{{- if and $config.enabled (ne $service "redis") (ne $service "postgres") }}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ $service }}
+  labels:
+    network-mapper.otterize.com/ebpf-visibility: 'true'
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ $service }}
+  template:
+    metadata:
+      labels:
+        app: {{ $service }}
+        network-mapper.otterize.com/ebpf-visibility: 'true'
+    spec:
+      containers:
+        - name: {{ $service }}
+          image: {{ $config.image.repository }}:{{ $config.image.tag }}
+          ports:
+            - containerPort: {{ $config.port }}
+          env:
+            {{- range $key, $value := $config.env }}
+            - name: {{ $key }}
+              value: {{ $value | quote }}
+            {{- end }}
+          imagePullPolicy: Always
+{{- end }}
+{{- end }}

@@ -7,12 +7,11 @@ from pydantic import BaseModel
 
 PORT = 7004
 REDIS_HOST = os.environ.get('REDIS_HOST') or 'localhost'
-REDIS_PORT = os.environ.get('REDIS_PORT') or 6379
 PRODUCTS_SERVICE_API = os.environ.get('PRODUCTS_SERVICE_API') or 'https://localhost:7002'
 
 
 app = FastAPI()
-redis_client = redis.Redis(host=REDIS_HOST, port=REDIS_PORT, db=0, decode_responses=True)
+redis_client = redis.Redis(host=REDIS_HOST, port=6379, db=0, decode_responses=True)
 
 class SetCartItem(BaseModel):
     item_id: int

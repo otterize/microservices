@@ -1,3 +1,5 @@
+import os
+
 from fastapi import FastAPI
 from fastapi.responses import RedirectResponse
 from fastapi.staticfiles import StaticFiles
@@ -14,8 +16,6 @@ from routes.newsletter import router as newsletter_router
 app = FastAPI()
 
 PORT = 7000
-USERNAME = "test@test.com"
-PASSWORD = "password"
 
 # Middleware for serving static files (like CSS, JS)
 app.mount("/static", StaticFiles(directory="static"), name="static")
@@ -47,4 +47,15 @@ app.include_router(newsletter_router, prefix="/api/newsletter", tags=["newslette
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app="server:app", host="0.0.0.0", port=PORT, reload=True)
+    dir_path = os.path.dirname(os.path.realpath(__file__))
+    key_path = f"{dir_path}/server.key"
+    cert_path = f"{dir_path}/server.crt"
+
+    print(key_path)
+
+    if os.path.exists(cert_path) and os.path.exists(key_path):
+        print(f"Starting server at https://localhost:{PORT}")
+        uvicorn.run(app="server:app", host="0.0.0.0", port=PORT, reload=True, ssl_keyfile=key_path, ssl_certfile=cert_path)
+    else:
+        print(f"Starting server at http://localhost:{PORT}")
+        uvicorn.run(app="server:app", host="0.0.0.0", port=PORT, reload=True)

@@ -1,0 +1,88 @@
+postgres:
+  enabled: true
+  image:
+    repository: postgres
+    tag: "14"
+  port: 5432
+  env:
+    POSTGRES_DB: otterside
+    POSTGRES_PASSWORD: password
+    PGDATA: /var/lib/postgresql/data/pgdata
+  persistence:
+    enabled: true
+    size: 4Gi
+
+redis:
+  enabled: true
+  image:
+    repository: redis
+    tag: "latest"
+  port: 6379
+
+services:
+  users-service:
+    enabled: true
+    image:
+      repository: public.ecr.aws/e3b4k2v5/otterside
+      tag: users
+    port: 7001
+    env:
+      DB_NAME: otterside
+      DB_SERVICE_HOST: postgres
+      DB_SERVICE_USER: postgres
+      DB_SERVICE_PASS: password
+
+  products-service:
+    enabled: true
+    image:
+      repository: public.ecr.aws/e3b4k2v5/otterside
+      tag: products
+    port: 7002
+    env:
+      STORAGE_ENABLED: "false"
+      STORAGE_BUCKET_NAME: bucket-name
+      STORAGE_OBJECT_KEY: products.json
+
+  newsletter-service:
+    enabled: true
+    image:
+      repository: public.ecr.aws/e3b4k2v5/otterside
+      tag: newsletter
+    port: 7003
+    env:
+      DB_NAME: otterside
+      DB_SERVICE_HOST: postgres
+      DB_SERVICE_USER: postgres
+      DB_SERVICE_PASS: password
+
+  cart-service:
+    enabled: true
+    image:
+      repository: public.ecr.aws/e3b4k2v5/otterside
+      tag: cart
+    port: 7004
+    env:
+      REDIS_HOST: redis
+      PRODUCTS_SERVICE_API: https://products-service:7002
+
+  checkout-service:
+    enabled: true
+    image:
+      repository: public.ecr.aws/e3b4k2v5/otterside
+      tag: checkout
+    port: 7005
+    env:
+      CART_SERVICE_API: https://cart-service:7004
+
+  frontend-service:
+    enabled: true
+    image:
+      repository: public.ecr.aws/e3b4k2v5/otterside
+      tag: frontend
+    port: 7000
+    env:
+      CART_SERVICE_API: https://cart-service:7004
+      USERS_SERVICE_API: https://users-service:7001
+      PRODUCTS_SERVICE_API: https://products-service:7002
+      CHECKOUT_SERVICE_API: https://checkout-service:7005
+      NEWSLETTER_SERVICE_API: https://newsletter-service:7003
