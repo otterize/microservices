@@ -1,5 +1,6 @@
 postgres:
   enabled: true
+  persistent: false
   image:
     repository: postgres
     tag: "14"

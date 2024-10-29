@@ -31,6 +31,10 @@ spec:
               name: postgres-data
       volumes:
         - name: postgres-data
+          {{- if .Values.postgres.persistent }}
           persistentVolumeClaim:
             claimName: postgres-pvc
+            {{- else }}
+          emptyDir: {}
+          {{- end }}
 {{- end }}
