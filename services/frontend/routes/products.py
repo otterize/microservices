@@ -22,4 +22,5 @@ async def products(request: Request):
             }
         )
 
+    print(f"Could not load products. Error: {api_resp.text}")
     return HTMLResponse(status_code=500, content="Could not load products. Please try again later.")

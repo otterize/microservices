@@ -30,8 +30,9 @@ type Product struct {
 var products []Product
 var mu sync.Mutex // Mutex for thread-safe access to products
 
-var BucketEnabled = getEnv("STORAGE_ENABLED", "false")
-var BucketName = getEnv("STORAGE_BUCKET_NAME", "bucket-name")
+var BucketEnabled = getEnv("STORAGE_ENABLED", "true")
+var BucketRegion = getEnv("STORAGE_REGION", "us-east-1")
+var BucketName = getEnv("STORAGE_BUCKET_NAME", "otterside")
 var ObjectKey = getEnv("STORAGE_OBJECT_KEY", "products.json")
 
 func getEnv(key, fallback string) string {
@@ -50,6 +51,8 @@ func loadProducts(client *s3.Client) {
 	var err error
 
 	if BucketEnabled == "true" {
+		log.Printf("Loading products from S3 bucket: %s\n", BucketName)
+
 		input := &s3.GetObjectInput{
 			Bucket: aws.String(BucketName),
 			Key:    aws.String(ObjectKey),
@@ -68,7 +71,9 @@ func loadProducts(client *s3.Client) {
 			return
 		}
 	} else {
-		data, err = ioutil.ReadFile("products.json")
+		log.Printf("Loading products from filesystem: %s\n", ObjectKey)
+
+		data, err = ioutil.ReadFile(ObjectKey)
 		if err != nil {
 			log.Fatalf("Failed to read products.json: %v", err)
 		}
@@ -118,7 +123,11 @@ func getProductByID(w http.ResponseWriter, r *http.Request) {
 
 func main() {
 	// Initialize AWS SDK for S3
-	cfg, err := config.LoadDefaultConfig(context.TODO())
+	cfg, err := config.LoadDefaultConfig(
+		context.TODO(),
+		config.WithRegion(BucketRegion),
+		config.WithCredentialsProvider(aws.AnonymousCredentials{}),
+	)
 	if err != nil {
 		log.Fatalf("Unable to load AWS SDK config: %v", err)
 	}

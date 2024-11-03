@@ -11,13 +11,14 @@ templates = Jinja2Templates(directory="templates")
 
 
 @router.post("/subscribe", tags=["newsletter"], response_class=HTMLResponse)
-async def products(email: str = Form(...)):
+async def subscribe(email: str = Form(...)):
     api_resp = requests.post(url=f'{NEWSLETTER_SERVICE_API}/subscribe', verify=False, json={
         "email": email
     })
     if api_resp.status_code == 201:
         return HTMLResponse(status_code=200, content="Successfully subscribed to newsletter!")
 
+    print(f"Could not subscribe. Error: {api_resp.text}")
     return HTMLResponse(
         status_code=api_resp.status_code,
         content="Could not subscribe. Please try again later."

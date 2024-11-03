@@ -40,8 +40,9 @@ services:
       tag: products
     port: 7002
     env:
-      STORAGE_ENABLED: "false"
-      STORAGE_BUCKET_NAME: bucket-name
+      STORAGE_ENABLED: true
+      STORAGE_REGION: us-east-1
+      STORAGE_BUCKET_NAME: otterside
       STORAGE_OBJECT_KEY: products.json
 
   newsletter-service:

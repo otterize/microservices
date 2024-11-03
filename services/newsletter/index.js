@@ -73,6 +73,8 @@ app.post('/subscribe', async (req, res) => {
     if (error.name === 'SequelizeUniqueConstraintError') {
       return res.status(201).json({ message: 'Subscribed successfully' });
     }
+
+    console.log(error)
     return res.status(500).json({ error: 'Failed to subscribe' });
   }
 });
