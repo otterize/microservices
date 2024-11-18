@@ -60,29 +60,28 @@ app.post('/subscribe', async (req, res) => {
   try {
     // Create a new subscriber in the database
     await Subscriber.create({ email });
-
-    // Mock sending email
-    await fetch(`https://otterize.com`,{
-      method: 'POST',
-      body: JSON.stringify({ email }),
-      headers: {'Content-Type': 'application/json'}
-    });
-
-    return res.status(201).json({ message: 'Subscribed successfully' });
   } catch (error) {
-    if (error.name === 'SequelizeUniqueConstraintError') {
-      return res.status(201).json({ message: 'Subscribed successfully' });
+    if (error.name !== 'SequelizeUniqueConstraintError') {
+      console.log(error)
+      return res.status(500).json({ error: 'Failed to subscribe' });
     }
-
-    console.log(error)
-    return res.status(500).json({ error: 'Failed to subscribe' });
   }
+
+  console.log(`Sending welcome email to ${email}`);
+
+  // Mock sending email - over HTTP
+  await fetch(`http://example.com`,{
+    method: 'POST',
+    body: JSON.stringify({ email }),
+    headers: {'Content-Type': 'application/json'}
+  });
+
+  return res.status(201).json({ message: 'Subscribed successfully' });
 });
 
 // Certificate paths
 const certPath = path.join(__dirname, 'server.crt');
 const keyPath = path.join(__dirname, 'server.key');
-console.log(certPath);
 
 // Start the server
 if (fs.existsSync(certPath) && fs.existsSync(keyPath)) {

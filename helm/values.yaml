@@ -87,4 +87,4 @@ services:
       USERS_SERVICE_API: https://users-service:7001
       PRODUCTS_SERVICE_API: https://products-service:7002
       CHECKOUT_SERVICE_API: https://checkout-service:7005
-      NEWSLETTER_SERVICE_API: https://newsletter-service:7003
+      NEWSLETTER_SERVICE_API: http://newsletter-service:7003

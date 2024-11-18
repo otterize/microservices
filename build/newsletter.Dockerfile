@@ -15,7 +15,7 @@ FROM node:21
 WORKDIR /app
 
 # Copy the certificates from the certs stage
-COPY --from=certs /app .
+# COPY --from=certs /app .
 
 # Download and install dependencies
 COPY services/newsletter/package*.json ./

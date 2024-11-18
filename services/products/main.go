@@ -16,6 +16,7 @@ import (
 	"sync"
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob"
 	"github.com/aws/aws-sdk-go-v2/config"
 )
 
@@ -42,8 +43,38 @@ func getEnv(key, fallback string) string {
 	return fallback
 }
 
+func readAzureBlob(client *azblob.Client) ([]byte, error) {
+	log.Printf("Loading products from Azure container: %s\n", BucketName)
+
+	// Download the blob content
+	resp, err := client.DownloadStream(context.TODO(), BucketName, ObjectKey, nil)
+	if err != nil {
+		return nil, fmt.Errorf("failed to download blob: %w", err)
+	}
+	defer resp.Body.Close()
+
+	return ioutil.ReadAll(resp.Body)
+}
+
+func readS3Object(client *s3.Client) ([]byte, error) {
+	log.Printf("Loading products from S3 bucket: %s\n", BucketName)
+
+	input := &s3.GetObjectInput{
+		Bucket: aws.String(BucketName),
+		Key:    aws.String(ObjectKey),
+	}
+
+	result, err := client.GetObject(context.TODO(), input)
+	if err != nil {
+		return nil, fmt.Errorf("Failed to get object from S3: %v\n", err)
+	}
+	defer result.Body.Close()
+
+	return ioutil.ReadAll(result.Body)
+}
+
 // Load products from the JSON file
-func loadProducts(client *s3.Client) {
+func loadProducts(s3Client *s3.Client, blobClient *azblob.Client) {
 	mu.Lock()
 	defer mu.Unlock()
 
@@ -51,24 +82,14 @@ func loadProducts(client *s3.Client) {
 	var err error
 
 	if BucketEnabled == "true" {
-		log.Printf("Loading products from S3 bucket: %s\n", BucketName)
-
-		input := &s3.GetObjectInput{
-			Bucket: aws.String(BucketName),
-			Key:    aws.String(ObjectKey),
+		data, err = readS3Object(s3Client)
+		if err != nil {
+			log.Fatalf("Failed to read aws products.json: %v", err)
 		}
 
-		result, err := client.GetObject(context.TODO(), input)
+		data, err = readAzureBlob(blobClient)
 		if err != nil {
-			log.Printf("Failed to get object from S3: %v\n", err)
-			return
-		}
-		defer result.Body.Close()
-
-		data, err = ioutil.ReadAll(result.Body)
-		if err != nil {
-			log.Printf("Failed to read S3 object body: %v\n", err)
-			return
+			log.Fatalf("Failed to read azure products.json: %v", err)
 		}
 	} else {
 		log.Printf("Loading products from filesystem: %s\n", ObjectKey)
@@ -84,12 +105,12 @@ func loadProducts(client *s3.Client) {
 	}
 }
 
-func reloadProductData(client *s3.Client) {
+func reloadProductData(client *s3.Client, blobClient *azblob.Client) {
 	ticker := time.NewTicker(10 * time.Second)
 	defer ticker.Stop()
 
 	for range ticker.C {
-		loadProducts(client)
+		loadProducts(client, blobClient)
 	}
 }
 
@@ -133,9 +154,15 @@ func main() {
 	}
 	s3Client := s3.NewFromConfig(cfg)
 
+	// Initialize Azure SDK for Blob Storage
+	blobClient, err := azblob.NewClientWithNoCredential("https://ottersidestorage.blob.core.windows.net", nil)
+	if err != nil {
+		log.Fatalf("Unable to load AWS SDK config: %v", err)
+	}
+
 	// Load products
-	loadProducts(s3Client)
-	go reloadProductData(s3Client)
+	loadProducts(s3Client, blobClient)
+	go reloadProductData(s3Client, blobClient)
 
 	// Set up the router
 	r := mux.NewRouter()

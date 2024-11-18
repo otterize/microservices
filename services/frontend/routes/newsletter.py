@@ -4,7 +4,7 @@ from fastapi import APIRouter, Form
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 
-NEWSLETTER_SERVICE_API = os.environ.get('NEWSLETTER_SERVICE_API') or 'https://localhost:7003'
+NEWSLETTER_SERVICE_API = os.environ.get('NEWSLETTER_SERVICE_API') or 'http://localhost:7003'
 router = APIRouter()
 
 templates = Jinja2Templates(directory="templates")
